@@ -3,17 +3,23 @@ const http = require('http');
 const exec = require('child_process').exec;
 
 const createHandler = require('github-webhook-handler');
+const dotenv = require('dotenv');
+
+dotenv.config({path: 'deploy.env'});
+const port = process.env.SERVER_PORT;
+const secret = process.env.SECRET_KEY;
+
 const handler = createHandler({
   path: '/',
-  secret: 'test'
+  secret: secret
 });
 
-const port = 7777;
 const deployments = {
   'boo-deploy': './boo-deploy.sh',
 };
 
 console.log(`Listening for deployment hooks on port ${port}`);
+
 http.createServer(function (req, res) {
   handler(req, res, function (err) {
     res.statusCode = 404;
@@ -30,7 +36,7 @@ handler.on('release', function (event) {
   let release = event.payload.release;
 
   console.log(
-    `Received a release event for ${respository.name}` +
+    `Received a release event for ${repository.name}` +
    ` ${release.tag_name} (${release.author.login})`);
 
     if (deployments.hasOwnProperty(repository.name)) {
