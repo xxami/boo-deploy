@@ -1,12 +1,14 @@
 
 const http = require('http');
+const exec = require('child_process').exec;
+
 const createHandler = require('github-webhook-handler');
 const handler = createHandler({
   path: '/',
   secret: 'test'
 });
 
-const deploymentScripts = {
+const deployments = {
   'boo-deploy': './boo-deploy.sh',
 };
 
@@ -29,14 +31,18 @@ handler.on('release', function (event) {
     event.payload.action,
     release.tag_name,
     release.author.login);
-
     if (deploymentScripts.hasOwnProperty(repository.name)) {
       console.log('Found deployment scripts, running...');
+      exec(deployments[repository.name],
+        function(err, stdout, stderr) {
 
-      exec(deploymentScripts[repository.name], function(err, stdout, stderr) {
-        if (stdout != null) console.log('output: ' + stdout);
-        if (stderr != null) console.log('stderr: ' + stderr);
-        if (err != null) console.log('error: ' + stderr);
+        let logstdio = function(description, stdio) {
+          if (stdio != null)
+            console.log(description + ': ' + stdio);
+        };
+        logstdio('output', stdout);
+        logstdio('stderr', stderr);
+        logstdio('error', err);
       });
     }
 });
