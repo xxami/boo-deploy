@@ -31,7 +31,7 @@ handler.on('release', function (event) {
     event.payload.action,
     release.tag_name,
     release.author.login);
-    if (deploymentScripts.hasOwnProperty(repository.name)) {
+    if (deployments.hasOwnProperty(repository.name)) {
       console.log('Found deployment scripts, running...');
       exec(deployments[repository.name],
         function(err, stdout, stderr) {
