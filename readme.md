@@ -16,8 +16,8 @@ github:
   webhook_secret: test
 
 deployment_scripts:
-  - example: ./example.sh
-  - boo-deploy: echo "Hello, world!"
+  example: ./example.sh
+  boo-deploy: echo "Hello, world!"
 ```
 Add a release webhook event to your repos (example/boo-deploy in example) posting your domain/path/port as configured. **Important:** Be sure to set the webhook secret, as this is the only measure of security in triggering boo-deploy.
 
