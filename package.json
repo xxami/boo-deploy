@@ -11,8 +11,9 @@
     "test": "./node_modules/.bin/mocha --harmony --reporter spec --require should *test.js"
   },
   "dependencies": {
-    "dotenv": "^4.0.0",
-    "github-webhook-handler": "^0.6.0"
+    "config": "^1.27.0",
+    "github-webhook-handler": "^0.6.0",
+    "js-yaml": "^3.10.0"
   },
   "devDependencies": {
     "mocha": "^3.4.2",
